@@ -3,6 +3,7 @@
 import re
 from typing import List
 import logging
+import csv
 
 
 def filter_datum(fields: List[str],
@@ -36,3 +37,22 @@ class RedactingFormatter(logging.Formatter):
                                   record.msg,
                                   self.SEPARATOR)
         return super(RedactingFormatter, self).format(record)
+
+
+def get_logger():
+    """ a function that takes no argument and returns
+    logging.Logger object """
+    logger = logging.getLogger('user_data')
+    logger.setLevel(logging.INFO)
+    logger.propagate = False
+
+    stream_handler = logging.StreamHandler()
+    redacting_formatter = RedactingFormatter(PII_FIELDS)
+    stream_handler.setFormatter(redacting_formatter)
+
+    logger.addHandler(stream_handler)
+
+    return logger
+
+
+PII_FIELDS = ('name', 'email', 'phone', 'address', 'ssn')
