@@ -61,9 +61,26 @@ def get_logger() -> logging.Logger:
 def get_db() -> mysql.connector.connection.MySQLConnection:
     """ a function that returns a connector to a database """
     return mysql.connector.connect(
-        host=os.getenv('PERSONAL_DATA_DB_HOST', 'localhost'),
-        database=os.getenv('PERSONAL_DATA_DB_NAME', ''),
-        user=os.getenv('PERSONAL_DATA_DB_USERNAME', 'root'),
-        password=os.getenv('PERSONAL_DATA_DB_PASSWORD', ''),
+        host=os.environ('PERSONAL_DATA_DB_HOST', 'localhost'),
+        database=os.environ('PERSONAL_DATA_DB_NAME', ''),
+        user=os.environ('PERSONAL_DATA_DB_USERNAME', 'root'),
+        password=os.environ('PERSONAL_DATA_DB_PASSWORD', ''),
         port=3306,
     )
+
+
+def main():
+    """create a database connection using function get_db """            
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute('SELECT * FROM users;')
+    sql_logger = get_logger()
+    retrieved_data = []
+    for row in cursor:
+        message = f'name={row[0]}; email={row[1]}; phone={row[2]}; ' \
+                  f'ssn={row[3]}; password={row[4]}; ip={row[5]}; ' \
+                  f'last_login={row[6]}; user_agent={row[7]};'
+        retrieved_data.append(filter_datum(PII_FIELDS, '***', message, '; '))
+    for datum in retrieved_data:
+        sql_logger.info(datum)
+    cursor.close()
