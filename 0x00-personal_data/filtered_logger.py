@@ -84,3 +84,7 @@ def main():
     for datum in retrieved_data:
         sql_logger.info(datum)
     cursor.close()
+
+
+if __name__ == "__main__":
+    main()
