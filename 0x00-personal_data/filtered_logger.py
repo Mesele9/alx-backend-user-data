@@ -6,7 +6,7 @@ import logging
 import csv
 
 
-PII_FIELDS = ('name', 'email', 'phone', 'address', 'ssn')
+PII_FIELDS = ('name', 'email', 'phone', 'password', 'ssn')
 
 
 def filter_datum(fields: List[str],
