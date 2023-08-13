@@ -2,7 +2,7 @@
 """ session_exp_auth.py """
 from api.v1.auth.session_auth import SessionAuth
 import os
-
+from datetime import datetime, timedelta
 
 class SessionExpAuth(SessionAuth):
     """ a class that imherits from SessionAuth """
