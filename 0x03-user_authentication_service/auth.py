@@ -76,9 +76,7 @@ class Auth:
         """ a method that generates reset token """
         try:
             user = self._db.find_user_by(email=email)
-
-        except NoResultFound:
-            raise ValueError
-        else:
             user.reset_token = _generate_uuid()
             return reset_token
+        except NoResultFound:
+            raise ValueError
