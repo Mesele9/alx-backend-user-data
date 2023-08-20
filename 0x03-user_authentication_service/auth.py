@@ -77,6 +77,7 @@ class Auth:
         try:
             user = self._db.find_user_by(email=email)
             user.reset_token = _generate_uuid()
+            self._db._session.commit()
             return reset_token
         except NoResultFound:
             raise ValueError
